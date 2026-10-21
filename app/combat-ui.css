@@ -1,0 +1,320 @@
+/* DRAX FPS combat interface — rebuilt from scratch for a lightweight FPS HUD. */
+:root {
+  --drax-bg: #05090b;
+  --drax-panel: rgba(6, 11, 14, .9);
+  --drax-panel-soft: rgba(6, 11, 14, .72);
+  --drax-ink: #edf2ef;
+  --drax-muted: #8b9898;
+  --drax-dim: #596666;
+  --drax-line: rgba(230, 237, 233, .16);
+  --drax-line-strong: rgba(230, 237, 233, .3);
+  --drax-viper: #5fc9dc;
+  --drax-raven: #ef9865;
+  --drax-accent: #d6bd6c;
+  --drax-danger: #ff7867;
+}
+
+html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--drax-bg); }
+body { font-family: Bahnschrift, "Arial Narrow", Arial, sans-serif; }
+.drax-root { position: fixed; inset: 0; overflow: hidden; background: #05090b; color: var(--drax-ink); --hud-scale: .92; --hud-opacity: .9; }
+.drax-scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+.drax-ui { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+.drax-ui *, .drax-ui *::before, .drax-ui *::after { box-sizing: border-box; }
+.drax-ui button, .drax-ui select, .drax-ui input { font: inherit; }
+.drax-ui button { border: 0; }
+.drax-screen-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(2,5,7,.99) 0, rgba(3,7,10,.92) 38%, rgba(3,7,10,.52) 64%, rgba(3,7,10,.18) 82%, transparent 100%), linear-gradient(0deg, rgba(2,5,7,.7), transparent 42%); }
+
+/* Deployment — intentionally not a dashboard/card layout. */
+.drax-deploy { position: absolute; inset: 0; pointer-events: auto; padding: 26px 34px 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(330px, 420px); grid-template-rows: 48px 1fr auto auto; gap: 18px 48px; }
+.drax-deploy-top { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; }
+.drax-brand { display: flex; align-items: center; gap: 10px; color: var(--drax-ink); }
+.drax-brand > b { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--drax-line-strong); color: var(--drax-accent); font-size: 17px; letter-spacing: -.08em; }
+.drax-brand > span { display: flex; flex-direction: column; font-size: 12px; font-weight: 800; letter-spacing: .16em; }
+.drax-brand small { margin-top: 2px; color: var(--drax-dim); font-size: 7px; font-weight: 650; letter-spacing: .22em; }
+.drax-utility { display: flex; gap: 4px; }
+.drax-utility button { min-width: 38px; height: 34px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 5px; background: rgba(7,13,16,.68); border: 1px solid var(--drax-line); color: #a9b3b0; cursor: pointer; font-size: 9px; }
+.drax-utility button:hover { background: rgba(24,34,37,.86); color: var(--drax-ink); }
+
+.drax-deploy-copy { align-self: center; min-width: 0; padding-bottom: 64px; }
+.drax-mode-tag { display: inline-block; padding: 5px 0; color: var(--drax-accent); border-bottom: 1px solid rgba(214,189,108,.45); font: 750 9px ui-monospace, Consolas, monospace; letter-spacing: .18em; }
+.drax-deploy-copy h1 { margin: 18px 0 11px; max-width: 780px; color: #eef2ef; font-size: clamp(56px, 7vw, 112px); font-weight: 900; line-height: .76; letter-spacing: -.065em; text-transform: uppercase; text-shadow: 0 8px 32px rgba(0,0,0,.46); }
+.drax-deploy-copy h1 em { color: #aeb9b5; font-style: normal; }
+.drax-deploy-copy p { margin: 0; display: flex; gap: 9px; align-items: center; color: var(--drax-muted); font: 700 10px ui-monospace, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
+.drax-deploy-copy p span { color: var(--drax-accent); }
+
+.drax-online { margin-top: 18px; width: min(720px, 100%); background: rgba(4,9,12,.8); border: 1px solid var(--drax-line); }
+.drax-online-head { min-height: 28px; padding: 0 9px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--drax-line); color: #8e9b99; font: 700 8px ui-monospace, Consolas, monospace; letter-spacing: .11em; }
+.drax-online-head span { display: flex; align-items: center; gap: 7px; }
+.drax-online-head small { overflow: hidden; color: #63706f; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.drax-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #596666; }
+.drax-online-connecting { background: var(--drax-accent); }
+.drax-online-online, .drax-online-room { background: #76c78b; box-shadow: 0 0 8px rgba(118,199,139,.28); }
+.drax-online-controls { min-height: 42px; padding: 6px; display: grid; grid-template-columns: minmax(150px,1fr) minmax(150px,1fr) auto; align-items: center; gap: 5px; }
+.drax-online-controls input, .drax-room-code-join input { height: 30px; min-width: 0; padding: 0 8px; background: #0b1316; border: 1px solid var(--drax-line); color: #dce3df; outline: 0; font: 700 9px ui-monospace, Consolas, monospace; letter-spacing: .08em; }
+.drax-online-controls input:focus, .drax-room-code-join input:focus { border-color: var(--drax-line-strong); }
+.drax-online-controls input:disabled { opacity: .55; }
+.drax-room-input { width: 108px; text-transform: uppercase; }
+.drax-online-controls button, .drax-room-code-join button { height: 30px; padding: 0 10px; border: 0; background: #dce2dc; color: #061013; cursor: pointer; font-size: 8px; font-weight: 850; letter-spacing: .1em; }
+.drax-online-controls button:disabled, .drax-room-code-join button:disabled, .drax-room-card:disabled { opacity: .4; cursor: default; }
+.drax-current-room { min-width: 0; padding: 0 8px; display: flex; flex-direction: column; color: #dce3df; font: 850 10px ui-monospace, Consolas, monospace; letter-spacing: .08em; }
+.drax-current-room span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drax-current-room small { margin-top: 2px; color: var(--drax-accent); font-size: 8px; letter-spacing: .14em; }
+.drax-room-browser { border-top: 1px solid rgba(230,237,233,.07); }
+.drax-room-browser-head { height: 25px; padding: 0 8px; display: flex; align-items: center; justify-content: space-between; color: #788584; font: 750 7px ui-monospace, Consolas, monospace; letter-spacing: .13em; }
+.drax-room-browser-head small { color: var(--drax-accent); }
+.drax-room-list { max-height: 118px; padding: 0 6px 6px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 5px; overflow: auto; }
+.drax-room-card { min-width: 0; min-height: 43px; padding: 6px 7px; display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 8px; align-items: center; background: rgba(13,23,26,.82); border: 1px solid rgba(230,237,233,.09); color: #bdc8c4; cursor: pointer; text-align: left; }
+.drax-room-card:hover:not(:disabled) { background: rgba(29,45,48,.9); border-color: var(--drax-line-strong); }
+.drax-room-card > span { min-width: 0; display: flex; flex-direction: column; }
+.drax-room-card b { overflow: hidden; color: #e3e9e5; font-size: 9px; letter-spacing: .06em; text-overflow: ellipsis; white-space: nowrap; }
+.drax-room-card small { margin-top: 3px; overflow: hidden; color: #657372; font: 650 7px ui-monospace, Consolas, monospace; text-overflow: ellipsis; white-space: nowrap; }
+.drax-room-card strong { color: var(--drax-viper); font: 800 9px ui-monospace, Consolas, monospace; }
+.drax-room-card i { color: var(--drax-accent); font: normal 850 7px ui-monospace, Consolas, monospace; letter-spacing: .1em; }
+.drax-room-empty { grid-column: 1 / -1; padding: 12px 8px; color: #667372; font: 650 8px ui-monospace, Consolas, monospace; text-align: center; }
+.drax-room-code-join { padding: 0 6px 6px; display: flex; gap: 5px; }
+.drax-room-code-join button { flex: 0 0 auto; }
+.drax-online-roster { min-height: 26px; padding: 5px 8px; display: flex; gap: 5px; align-items: center; flex-wrap: wrap; border-top: 1px solid rgba(230,237,233,.08); font: 700 7px ui-monospace, Consolas, monospace; }
+.drax-online-roster span { padding: 3px 5px; background: rgba(255,255,255,.04); }
+.drax-roster-viper { color: var(--drax-viper); }
+.drax-roster-raven { color: var(--drax-raven); }
+.drax-online-roster small { margin-left: auto; color: #71807e; }
+.drax-online-error { padding: 0 8px 7px; color: var(--drax-danger); font-size: 8px; }
+
+.drax-map-rail { grid-column: 1; display: flex; align-items: stretch; gap: 3px; min-height: 54px; }
+.drax-map-rail > small { width: 64px; display: flex; align-items: center; color: var(--drax-dim); font-size: 8px; letter-spacing: .18em; }
+.drax-map-rail button { min-width: 130px; padding: 0 12px; display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 8px; background: rgba(5,10,13,.66); border-top: 1px solid var(--drax-line); border-bottom: 1px solid var(--drax-line); color: #8f9b99; cursor: pointer; text-align: left; transition: background .1s ease, color .1s ease; }
+.drax-map-rail button i { color: #596666; font: normal 700 9px ui-monospace, Consolas, monospace; }
+.drax-map-rail button span { font-size: 10px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+.drax-map-rail button:hover { background: rgba(20,31,34,.86); color: #e5ebe7; }
+.drax-map-rail button.drax-selected { background: rgba(40,71,75,.72); color: #eef4ef; box-shadow: inset 0 -2px var(--drax-viper); }
+.drax-map-rail button.drax-selected i { color: var(--drax-viper); }
+.drax-map-rail button:disabled { opacity: .58; cursor: default; }
+
+.drax-loadout-panel { grid-column: 2; grid-row: 2 / span 2; align-self: center; width: 100%; background: rgba(4,9,12,.74); border-top: 1px solid var(--drax-line-strong); border-bottom: 1px solid var(--drax-line); }
+.drax-loadout-head { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 13px; border-bottom: 1px solid var(--drax-line); }
+.drax-loadout-head > span { color: var(--drax-ink); font-size: 11px; font-weight: 800; letter-spacing: .16em; }
+.drax-loadout-head small { color: var(--drax-dim); font-size: 7px; letter-spacing: .14em; }
+.drax-loadout-list { display: grid; }
+.drax-loadout-list button { min-height: 64px; display: grid; grid-template-columns: 26px 1fr 48px 56px; align-items: center; gap: 8px; padding: 7px 11px; background: transparent; border-bottom: 1px solid rgba(230,237,233,.09); color: #8f9998; cursor: pointer; text-align: left; }
+.drax-loadout-list button:hover { background: rgba(23,34,37,.66); }
+.drax-loadout-list button.drax-selected { background: linear-gradient(90deg, rgba(34,72,77,.72), rgba(15,27,30,.66)); box-shadow: inset 2px 0 var(--drax-viper); color: #e9efeb; }
+.drax-loadout-list kbd { color: var(--drax-dim); font: 700 9px ui-monospace, Consolas, monospace; }
+.drax-loadout-list button > span { display: flex; flex-direction: column; min-width: 0; }
+.drax-loadout-list button > span b { font-size: 12px; letter-spacing: .09em; }
+.drax-loadout-list button > span small { margin-top: 3px; color: #758282; font-size: 8px; letter-spacing: .08em; text-transform: uppercase; }
+.drax-loadout-list button > i { display: flex; flex-direction: column; align-items: flex-end; font-style: normal; }
+.drax-loadout-list button > i strong { color: #dce3df; font: 750 11px ui-monospace, Consolas, monospace; }
+.drax-loadout-list button > i small { margin-top: 2px; color: #596565; font-size: 7px; }
+.drax-selected-weapon { padding: 12px 13px 14px; display: flex; justify-content: space-between; gap: 10px; color: #aeb8b5; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.drax-selected-weapon small { color: #616e6e; font: 650 8px ui-monospace, Consolas, monospace; }
+
+.drax-deploy-cta { grid-column: 2; grid-row: 4; justify-self: end; width: 100%; height: 52px; padding: 0 17px; display: flex; align-items: center; justify-content: space-between; background: #e0e5df; color: #061013; cursor: pointer; font-size: 11px; font-weight: 850; letter-spacing: .17em; clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%); }
+.drax-deploy-cta:hover:not(:disabled) { background: #f4f6f1; }
+.drax-deploy-cta:disabled { opacity: .42; cursor: default; }
+.drax-error { grid-column: 2; color: var(--drax-danger); font-size: 9px; }
+.drax-deploy-footer { grid-column: 1; grid-row: 4; align-self: center; display: flex; flex-wrap: wrap; gap: 8px 18px; color: #697575; font-size: 8px; letter-spacing: .08em; }
+.drax-deploy-footer span { display: flex; gap: 6px; align-items: center; }
+.drax-deploy-footer kbd, .drax-pause kbd { padding: 2px 5px; background: rgba(13,21,24,.8); border: 1px solid var(--drax-line); color: #b2bcba; font: 700 8px ui-monospace, Consolas, monospace; }
+
+/* Combat HUD */
+.drax-hud { position: absolute; inset: 0; pointer-events: none; opacity: var(--hud-opacity); }
+.drax-damage { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 48%, rgba(122,14,8,.48) 100%); transition: opacity .08s linear; }
+.drax-matchbar { position: absolute; top: 13px; left: 50%; width: 344px; height: 42px; transform: translateX(-50%) scale(var(--hud-scale)); transform-origin: top center; display: grid; grid-template-columns: 1fr 104px 1fr; background: rgba(4,9,12,.76); border: 1px solid var(--drax-line); }
+.drax-team { display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font-size: 9px; font-weight: 800; letter-spacing: .15em; }
+.drax-team b { font-size: 23px; line-height: 1; }
+.drax-team-viper { color: var(--drax-viper); background: linear-gradient(90deg, rgba(49,111,121,.31), transparent); }
+.drax-team-raven { color: var(--drax-raven); background: linear-gradient(270deg, rgba(121,72,44,.29), transparent); }
+.drax-match-center { display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid var(--drax-line); border-right: 1px solid var(--drax-line); }
+.drax-match-center small { color: #7d8988; font-size: 6px; letter-spacing: .13em; }
+.drax-match-center strong { margin-top: 2px; color: #e9eeea; font: 800 11px ui-monospace, Consolas, monospace; }
+
+.drax-radar { position: absolute; top: 16px; left: 18px; width: 154px; transform: scale(var(--hud-scale)); transform-origin: top left; background: rgba(4,9,12,.62); border: 1px solid rgba(230,237,233,.13); }
+.drax-radar-head { height: 23px; padding: 0 7px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(230,237,233,.1); color: #909d9a; font: 700 7px ui-monospace, Consolas, monospace; letter-spacing: .08em; }
+.drax-radar-head b { color: #c8d0cc; }
+.drax-radar svg { display: block; width: 100%; height: 128px; }
+.drax-radar-field { fill: rgba(7,13,16,.68); stroke: rgba(225,235,230,.1); }
+.drax-radar-grid { fill: none; stroke: rgba(188,204,199,.1); stroke-width: 1; }
+.drax-radar-cover { fill: rgba(184,202,197,.3); }
+.drax-radar-label { fill: rgba(226,235,231,.62); font-size: 4px; }
+.drax-dot-viper { fill: var(--drax-viper); }
+.drax-dot-raven { fill: var(--drax-raven); }
+.drax-radar-player { fill: #fff; }
+
+.drax-objective-strip { position: absolute; top: 64px; left: 50%; min-width: 190px; height: 23px; padding: 0 9px; transform: translateX(-50%) scale(var(--hud-scale)); transform-origin: top center; display: flex; align-items: center; justify-content: center; gap: 7px; color: #c8d0cd; background: rgba(4,9,12,.55); border-top: 1px solid rgba(230,237,233,.12); font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.drax-objective-strip svg { color: var(--drax-accent); }
+.drax-objective-strip b { color: #7e8a89; font: 700 8px ui-monospace, Consolas, monospace; }
+.drax-heading { position: absolute; top: 93px; left: 50%; transform: translateX(-50%) scale(var(--hud-scale)); color: rgba(226,234,230,.56); font: 700 8px ui-monospace, Consolas, monospace; letter-spacing: .14em; }
+
+.drax-reticle { position: absolute; left: 50%; top: 50%; z-index: 40; width: 30px; height: 30px; transform: translate(-50%, -50%); }
+.drax-reticle i { position: absolute; display: block; background: rgba(248,250,247,.96); box-shadow: 0 0 0 1px rgba(0,0,0,.72), 0 0 3px rgba(0,0,0,.9); }
+.drax-reticle i:nth-child(1) { left: 14px; top: 1px; width: 2px; height: 5px; }
+.drax-reticle i:nth-child(2) { left: 14px; bottom: 1px; width: 2px; height: 5px; }
+.drax-reticle i:nth-child(3) { left: 1px; top: 14px; width: 5px; height: 2px; }
+.drax-reticle i:nth-child(4) { right: 1px; top: 14px; width: 5px; height: 2px; }
+.drax-reticle b { position: absolute; left: 50%; top: 50%; z-index: 3; width: 1px; height: 1px; transform: translate(-50%, -50%); }
+.drax-reticle-hip b::before, .drax-reticle-hip b::after { content: ""; position: absolute; left: 50%; top: 50%; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.82), 0 0 4px rgba(0,0,0,.82); transform: translate(-50%, -50%); }
+.drax-reticle-hip b::before { width: 12px; height: 2px; }
+.drax-reticle-hip b::after { width: 2px; height: 12px; }
+.drax-reticle-ads b { width: 3px; height: 3px; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.82), 0 0 3px rgba(0,0,0,.9); }
+.drax-reticle.drax-hit-body i, .drax-reticle.drax-hit-head i { background: #fff; }
+.drax-reticle.drax-hit-kill i { background: var(--drax-danger); }
+.drax-hit-readout { position: absolute; top: calc(50% + 24px); left: 50%; transform: translateX(-50%); padding: 2px 4px; background: rgba(3,7,9,.52); color: #d6dfdb; font: 700 8px ui-monospace, Consolas, monospace; letter-spacing: .06em; }
+.drax-hit-readout b { color: #fff; }
+.drax-hit-readout.drax-hit-kill { color: var(--drax-danger); }
+.drax-notice { position: absolute; top: calc(50% + 44px); left: 50%; transform: translateX(-50%); max-width: 440px; padding: 3px 7px; background: rgba(4,9,12,.48); border-left: 1px solid var(--drax-accent); color: #aeb8b5; font-size: 8px; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; white-space: nowrap; }
+.drax-kill { position: absolute; left: 50%; top: calc(50% + 67px); transform: translateX(-50%); display: flex; align-items: baseline; gap: 7px; color: #e8eeea; text-transform: uppercase; }
+.drax-kill span { color: var(--drax-danger); font-size: 7px; letter-spacing: .18em; }
+.drax-kill b { font-size: 10px; letter-spacing: .09em; }
+.drax-kill small { color: var(--drax-accent); font-size: 8px; }
+
+.drax-vitals { position: absolute; left: 18px; bottom: 17px; width: 174px; height: 48px; transform: scale(var(--hud-scale)); transform-origin: bottom left; display: grid; grid-template-columns: 24px 48px 1fr; grid-template-rows: 29px 9px; align-items: center; padding: 4px 8px 5px; background: linear-gradient(90deg, rgba(4,9,12,.78), rgba(4,9,12,.42)); border-left: 2px solid var(--drax-viper); }
+.drax-health-icon { color: #aeb8b5; }
+.drax-vitals > strong { font-size: 25px; font-weight: 850; font-variant-numeric: tabular-nums; }
+.drax-health-meter { height: 3px; background: rgba(255,255,255,.12); }
+.drax-health-meter i { display: block; height: 100%; background: var(--drax-viper); }
+.drax-vitals > span { grid-column: 2 / -1; align-self: end; color: #728080; font-size: 7px; letter-spacing: .13em; }
+
+.drax-ammo { position: absolute; right: 18px; bottom: 17px; min-width: 188px; height: 58px; transform: scale(var(--hud-scale)); transform-origin: bottom right; display: grid; grid-template-columns: 1fr auto; grid-template-rows: 18px 31px; padding: 5px 8px 5px 10px; background: linear-gradient(270deg, rgba(4,9,12,.8), rgba(4,9,12,.42)); border-right: 2px solid var(--drax-raven); }
+.drax-weapon-name { grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.drax-weapon-name span { color: #dbe2de; font-size: 8px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.drax-weapon-name small { color: #657272; font-size: 6px; letter-spacing: .08em; text-transform: uppercase; }
+.drax-rounds { display: flex; align-items: baseline; gap: 5px; }
+.drax-rounds strong { font-size: 32px; font-weight: 850; line-height: 1; font-variant-numeric: tabular-nums; }
+.drax-rounds strong.drax-low { color: var(--drax-danger); }
+.drax-rounds span { color: #7f8b89; font: 700 9px ui-monospace, Consolas, monospace; }
+.drax-equipment { align-self: center; color: var(--drax-accent); font: 750 9px ui-monospace, Consolas, monospace; }
+.drax-perf { position: absolute; top: 18px; right: 18px; display: flex; gap: 5px; align-items: center; color: rgba(217,225,221,.64); font: 700 8px ui-monospace, Consolas, monospace; }
+.drax-perf i { width: 5px; height: 5px; border-radius: 50%; background: #76c78b; }
+.drax-perf i.drax-perf-bad { background: var(--drax-danger); }
+
+.drax-weapon-rail { position: absolute; left: 50%; bottom: 75px; transform: translateX(-50%) translateY(7px) scale(var(--hud-scale)); transform-origin: bottom center; display: flex; gap: 2px; padding: 2px; background: rgba(4,9,12,.72); border: 1px solid rgba(230,237,233,.11); opacity: 0; transition: opacity .12s ease, transform .12s ease; }
+.drax-weapon-rail-show { opacity: 1; transform: translateX(-50%) translateY(0) scale(var(--hud-scale)); }
+.drax-weapon-rail > div { min-width: 72px; height: 28px; padding: 0 6px; display: flex; align-items: center; gap: 6px; color: #677474; font-size: 8px; }
+.drax-weapon-rail kbd { color: #586565; font: 700 7px ui-monospace, Consolas, monospace; }
+.drax-weapon-rail .drax-current { color: #e5ece8; box-shadow: inset 0 -1px var(--drax-viper); background: rgba(38,65,69,.6); }
+
+.drax-interaction { position: absolute; left: 50%; bottom: 84px; min-width: 230px; transform: translateX(-50%) scale(var(--hud-scale)); transform-origin: bottom center; padding: 7px 8px; background: rgba(4,9,12,.76); border-left: 2px solid var(--drax-accent); }
+.drax-interaction > div { display: flex; align-items: center; gap: 7px; color: #dce3df; font-size: 8px; font-weight: 800; letter-spacing: .09em; }
+.drax-interaction kbd { padding: 2px 5px; color: #071013; background: var(--drax-accent); font: 800 8px ui-monospace, Consolas, monospace; }
+.drax-interaction > i { display: block; height: 2px; margin-top: 6px; background: rgba(255,255,255,.11); }
+.drax-interaction > i > b { display: block; height: 100%; background: var(--drax-accent); }
+.drax-respawn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; color: #e8eeea; }
+.drax-respawn span { color: #98a3a1; font-size: 8px; letter-spacing: .2em; }
+.drax-respawn b { margin-top: 5px; font-size: 42px; font-variant-numeric: tabular-nums; }
+
+.drax-scope { position: absolute; inset: 0; z-index: 35; overflow: hidden; background: radial-gradient(circle at center, transparent 0 30vh, rgba(0,0,0,.22) 30.2vh, rgba(0,0,0,.97) 31vh 100%); }
+.drax-scope::after { content: ""; position: absolute; left: 50%; top: 50%; width: 60vh; height: 60vh; transform: translate(-50%, -50%); border: 2px solid rgba(10,14,13,.92); border-radius: 50%; box-shadow: inset 0 0 34px rgba(0,0,0,.32); }
+.drax-scope i:nth-child(1) { position: absolute; left: 50%; top: 50%; width: 1px; height: 56vh; transform: translate(-50%, -50%); background: rgba(245,248,244,.52); }
+.drax-scope i:nth-child(2) { position: absolute; left: 50%; top: 50%; width: 56vh; height: 1px; transform: translate(-50%, -50%); background: rgba(245,248,244,.52); }
+.drax-scope span { position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; transform: translate(-50%,-50%); border: 1px solid rgba(255,255,255,.9); border-radius: 50%; background: #101412; }
+.drax-hud-minimal .drax-perf { opacity: .55; }
+
+/* Pause */
+.drax-pause { position: absolute; left: clamp(34px, 6vw, 96px); top: 50%; width: 350px; transform: translateY(-50%); pointer-events: auto; }
+.drax-pause > span { color: var(--drax-accent); font-size: 8px; font-weight: 750; letter-spacing: .2em; }
+.drax-pause h2 { margin: 9px 0 2px; font-size: 42px; line-height: .9; letter-spacing: -.04em; text-transform: uppercase; }
+.drax-pause > small { color: #738080; font: 650 8px ui-monospace, Consolas, monospace; }
+.drax-pause nav { margin-top: 24px; border-top: 1px solid var(--drax-line); }
+.drax-pause nav button { width: 100%; height: 46px; display: flex; align-items: center; gap: 10px; padding: 0 11px; background: rgba(5,10,13,.68); border-bottom: 1px solid var(--drax-line); color: #99a5a2; cursor: pointer; font-size: 10px; font-weight: 750; letter-spacing: .12em; text-align: left; }
+.drax-pause nav button:hover { color: #edf2ef; background: rgba(25,36,39,.82); }
+.drax-pause nav button.drax-primary { color: #061013; background: #dce2dc; }
+.drax-pause p { margin-top: 15px; display: flex; align-items: center; gap: 7px; color: #657171; font-size: 8px; }
+
+/* Settings */
+.drax-settings { position: absolute; top: 50%; left: clamp(28px, 5vw, 80px); width: min(470px, calc(100% - 56px)); max-height: calc(100vh - 54px); transform: translateY(-50%); display: flex; flex-direction: column; pointer-events: auto; background: rgba(5,10,13,.96); border-top: 2px solid #cbd3cf; border-bottom: 1px solid var(--drax-line); }
+.drax-settings > header { min-height: 68px; padding: 13px 16px 11px; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--drax-line); }
+.drax-settings header span { color: #6e7b7a; font-size: 7px; letter-spacing: .18em; }
+.drax-settings h2 { margin: 4px 0 0; font-size: 25px; letter-spacing: -.02em; }
+.drax-settings header button { width: 32px; height: 32px; display: grid; place-items: center; background: transparent; color: #7c8987; cursor: pointer; }
+.drax-settings header button:hover { color: #fff; }
+.drax-settings-body { overflow: auto; padding: 0 16px; }
+.drax-setting-group { padding: 14px 0 13px; border-bottom: 1px solid var(--drax-line); }
+.drax-setting-group h3 { margin: 0 0 13px; color: var(--drax-accent); font-size: 8px; letter-spacing: .18em; }
+.drax-setting-slider { margin: 12px 0; }
+.drax-setting-slider > div:first-child { margin-bottom: 9px; display: flex; justify-content: space-between; color: #a8b3b0; font-size: 9px; }
+.drax-setting-slider b { color: #e1e7e3; font: 700 9px ui-monospace, Consolas, monospace; }
+.drax-setting-row { min-height: 42px; display: flex; align-items: center; justify-content: space-between; gap: 14px; color: #a8b3b0; font-size: 9px; }
+.drax-setting-row label { display: flex; flex-direction: column; }
+.drax-setting-row label small { margin-top: 3px; max-width: 265px; color: #606d6c; font-size: 7px; line-height: 1.35; }
+.drax-setting-row select { min-width: 118px; height: 31px; padding: 0 7px; background: #10181b; border: 1px solid var(--drax-line); color: #c9d1ce; outline: 0; font-size: 8px; }
+.drax-settings-done { min-height: 45px; margin: 13px 16px 15px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; background: #dce2dc; color: #061013; cursor: pointer; font-size: 9px; font-weight: 850; letter-spacing: .13em; }
+
+/* Scoreboard */
+.drax-scoreboard-backdrop { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: auto; background: rgba(2,5,7,.75); }
+.drax-scoreboard { width: min(900px, calc(100% - 64px)); padding: 17px; background: rgba(5,10,13,.97); border-top: 2px solid #cbd3cf; border-bottom: 1px solid var(--drax-line); }
+.drax-scoreboard > header { min-height: 64px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--drax-line); }
+.drax-scoreboard header span { color: #74807f; font-size: 7px; letter-spacing: .15em; }
+.drax-scoreboard h2 { margin: 4px 0 0; font-size: 19px; letter-spacing: .06em; }
+.drax-scoreboard header > div:last-child { display: flex; align-items: center; gap: 14px; }
+.drax-scoreboard header > div:last-child b { font-size: 34px; }
+.drax-scoreboard header > div:last-child b:first-child { color: var(--drax-viper); }
+.drax-scoreboard header > div:last-child b:last-child { color: var(--drax-raven); }
+.drax-scoreboard header i { color: #566261; font-style: normal; }
+.drax-score-tables { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.drax-score-team { border: 1px solid var(--drax-line); }
+.drax-score-team-head { height: 34px; padding: 0 9px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--drax-line); }
+.drax-score-team-head b { font-size: 9px; letter-spacing: .14em; }
+.drax-score-viper .drax-score-team-head b { color: var(--drax-viper); }
+.drax-score-raven .drax-score-team-head b { color: var(--drax-raven); }
+.drax-score-team-head span { color: #687574; font: 700 7px ui-monospace, Consolas, monospace; }
+.drax-score-row { min-height: 35px; padding: 0 9px; display: grid; grid-template-columns: 10px 1fr repeat(4, 30px); align-items: center; border-bottom: 1px solid rgba(230,237,233,.07); color: #899693; font: 650 9px ui-monospace, Consolas, monospace; }
+.drax-score-row > i { width: 5px; height: 5px; border-radius: 50%; background: #4d5857; }
+.drax-score-row > i.drax-alive { background: #75c58b; }
+.drax-score-row strong { color: #cbd3cf; font-size: 9px; letter-spacing: .04em; }
+.drax-player-row { background: rgba(95,201,220,.07); box-shadow: inset 2px 0 var(--drax-viper); }
+.drax-score-next { width: 220px; height: 43px; margin: 14px 0 0 auto; padding: 0 11px; display: flex; align-items: center; justify-content: space-between; background: #dce2dc; color: #061013; cursor: pointer; font-size: 9px; font-weight: 850; letter-spacing: .13em; }
+
+@media (max-width: 1050px) {
+  .drax-deploy { grid-template-columns: minmax(0,1fr) 340px; gap: 14px 28px; }
+  .drax-deploy-copy h1 { font-size: clamp(54px, 7vw, 80px); }
+  .drax-map-rail button { min-width: 108px; }
+}
+
+@media (max-width: 760px) {
+  .drax-deploy { padding: 18px 16px; grid-template-columns: 1fr; grid-template-rows: 42px auto 1fr auto auto; gap: 10px; overflow: auto; }
+  .drax-deploy-top { grid-column: 1; }
+  .drax-brand small { display: none; }
+  .drax-deploy-copy { grid-row: 2; align-self: start; padding: 10px 0 0; }
+  .drax-deploy-copy h1 { font-size: 46px; }
+  .drax-online-controls { grid-template-columns: 1fr; }
+  .drax-room-list { grid-template-columns: 1fr; max-height: 150px; }
+  .drax-room-code-join { flex-wrap: wrap; }
+  .drax-room-code-join .drax-room-input { flex: 1 1 130px; width: auto; }
+  .drax-map-rail { grid-column: 1; grid-row: 3; overflow-x: auto; align-self: start; }
+  .drax-map-rail > small { display: none; }
+  .drax-map-rail button { min-width: 120px; }
+  .drax-loadout-panel { grid-column: 1; grid-row: 4; align-self: auto; }
+  .drax-loadout-list button { min-height: 50px; }
+  .drax-selected-weapon { display: none; }
+  .drax-deploy-cta { grid-column: 1; grid-row: 5; }
+  .drax-deploy-footer { display: none; }
+  .drax-matchbar { width: 276px; grid-template-columns: 1fr 82px 1fr; }
+  .drax-team span { display: none; }
+  .drax-radar { top: 66px; left: 10px; width: 124px; }
+  .drax-radar svg { height: 94px; }
+  .drax-objective-strip { top: 62px; max-width: calc(100% - 30px); }
+  .drax-objective-strip b { display: none; }
+  .drax-heading { display: none; }
+  .drax-vitals { left: 10px; bottom: 11px; width: 142px; grid-template-columns: 20px 42px 1fr; }
+  .drax-vitals > span { display: none; }
+  .drax-ammo { right: 10px; bottom: 11px; min-width: 148px; }
+  .drax-weapon-name small { display: none; }
+  .drax-perf { right: 10px; }
+  .drax-score-tables { grid-template-columns: 1fr; }
+  .drax-scoreboard { width: calc(100% - 18px); max-height: calc(100% - 18px); overflow: auto; }
+  .drax-pause { left: 20px; width: calc(100% - 40px); }
+  .drax-settings { left: 14px; width: calc(100% - 28px); }
+}
+
+@media (max-height: 720px) and (min-width: 761px) {
+  .drax-deploy { padding-top: 18px; padding-bottom: 16px; }
+  .drax-deploy-copy { padding-bottom: 20px; }
+  .drax-deploy-copy h1 { font-size: 52px; margin: 11px 0 7px; }
+  .drax-loadout-list button { min-height: 49px; }
+  .drax-selected-weapon { padding: 8px 11px; }
+  .drax-loadout-head { height: 42px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drax-map-rail button, .drax-weapon-rail { transition: none; }
+}

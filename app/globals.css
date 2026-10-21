@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-muted: var(--muted);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: Bahnschrift, "Arial Narrow", Arial, sans-serif;
+}
+
+:root,
+.dark {
+  --background: #05090b;
+  --foreground: #edf2ef;
+  --primary: #dce2dc;
+  --muted: #202a2d;
+  --input: #202a2d;
+  --ring: #9fcac3;
+  --radius: 0.2rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #05090b;
+}
+
+body {
+  color: var(--foreground);
+  font-family: Bahnschrift, "Arial Narrow", Arial, sans-serif;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 1px solid #dce2dc;
+  outline-offset: 2px;
+}
+
+.scene,
+.scene canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.scene canvas {
+  outline: none;
+}
