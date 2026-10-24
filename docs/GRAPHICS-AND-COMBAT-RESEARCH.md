@@ -10,9 +10,9 @@ Có thể theo hướng mỹ thuật tương tự: hình khối có chủ đích
 
 Ba model GLB Kenney và một texture đi kèm khoảng 157 KiB, gồm license. File nhỏ không đồng nghĩa GPU luôn nhẹ: một model nhiều vật liệu vẫn tạo nhiều lần vẽ. Tất cả model mới được lưu trong dự án, không phụ thuộc CDN khi chơi. Art tải bất đồng bộ; đường đi và vật cản có sẵn ngay cả khi tải art thất bại.
 
-Mục tiêu cho bước nâng đồ họa kế tiếp: 60 FPS ở 1080p trên máy mục tiêu đã chọn; giảm số vật liệu NPC/viewmodel và số lượt vẽ trước khi tăng mật độ model. Ưu tiên atlas texture 512–1024, LOD, ánh sáng môi trường tính trước, mesh instancing và ít hậu kỳ. Chỉ dùng texture 2K cho vật thật sự chiếm nhiều diện tích màn hình. Đây là ngân sách đề xuất, chưa phải cam kết hiệu năng cho mọi máy.
+Mục tiêu cho bước nâng đồ họa kế tiếp: 60 FPS ở 1080p trên máy mục tiêu đã chọn; giảm số vật liệu NPC/viewmodel và số lượt vẽ trước khi tăng mật độ model. Ưu tiên atlas texture 512-1024, LOD, ánh sáng môi trường tính trước, mesh instancing và ít hậu kỳ. Chỉ dùng texture 2K cho vật thật sự chiếm nhiều diện tích màn hình. Đây là ngân sách đề xuất, chưa phải cam kết hiệu năng cho mọi máy.
 
-Đo nhanh Chromium tự động trên máy hiện tại: 1280×720, High, Sun Relay, đứng tại điểm xuất phát trong 3 giây, 15 mẫu HUD: 169–263 FPS; khoảng 838–874 lượt vẽ và 209–221 nghìn tam giác tính cả shadow/postprocessing. Đây là mẫu ngắn, không phải benchmark GPU phổ quát hoặc kiểm thử laptop yếu. Lượt vẽ còn cao, nên tối ưu batching nhân vật là ưu tiên trước khi thêm model dày đặc.
+Đo nhanh Chromium tự động trên máy hiện tại: 1280×720, High, Sun Relay, đứng tại điểm xuất phát trong 3 giây, 15 mẫu HUD: 169-263 FPS; khoảng 838-874 lượt vẽ và 209-221 nghìn tam giác tính cả shadow/postprocessing. Đây là mẫu ngắn, không phải benchmark GPU phổ quát hoặc kiểm thử laptop yếu. Lượt vẽ còn cao, nên tối ưu batching nhân vật là ưu tiên trước khi thêm model dày đặc.
 
 ## Những nguồn đã tham khảo
 
