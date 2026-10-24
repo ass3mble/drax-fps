@@ -169,7 +169,7 @@ function CombatHud(props: FpsInterfaceProps) {
     <div className="drax-damage" style={{ opacity: Math.min(.64, state.damage * .5 + (state.health < 35 ? .14 : 0)) }} />
     <MatchBar state={state} language={language} />
     {!minimalHud && <Radar state={state} mapId={mapId} language={language} />}
-    {!minimalHud && <div className="drax-objective-strip"><Crosshair size={12} /><span>{objective}</span>{plant && <b>{state.aliveAttackers} — {state.aliveDefenders}</b>}</div>}
+    {!minimalHud && <div className="drax-objective-strip"><Crosshair size={12} /><span>{objective}</span>{plant && <b>{state.aliveAttackers} : {state.aliveDefenders}</b>}</div>}
     {!minimalHud && <div className="drax-heading">{String(Math.round(state.heading)).padStart(3, '0')}°</div>}
     {!state.aiming && <div className={`drax-reticle drax-reticle-hip ${state.hit ? `drax-hit-${state.hitKind}` : ''}`} aria-hidden="true"><i /><i /><i /><i /><b /></div>}
     {state.aiming && state.weapon === 'sentinel' && <div className="drax-scope" aria-hidden="true"><i /><i /><span /></div>}
@@ -358,7 +358,7 @@ function ScoreboardScreen(props: FpsInterfaceProps) {
   const viper = state.scoreboard.filter(r => r.team === 'viper');
   const raven = state.scoreboard.filter(r => r.team === 'raven');
   return <div className="drax-scoreboard-backdrop"><section className="drax-scoreboard">
-    <header><div><span>{MAPS[mapId].name}</span><h2>{state.gameMode === 'plant-defuse' ? 'PLANT / DEFUSE' : 'TEAM DEATHMATCH'}</h2></div><div><b>{state.viperScore}</b><i>—</i><b>{state.ravenScore}</b></div></header>
+    <header><div><span>{MAPS[mapId].name}</span><h2>{state.gameMode === 'plant-defuse' ? 'PLANT / DEFUSE' : 'TEAM DEATHMATCH'}</h2></div><div><b>{state.viperScore}</b><i>:</i><b>{state.ravenScore}</b></div></header>
     <div className="drax-score-tables"><ScoreTeam name="VIPER" rows={viper} plant={state.gameMode === 'plant-defuse'} /><ScoreTeam name="RAVEN" rows={raven} plant={state.gameMode === 'plant-defuse'} /></div>
     {state.mode === 'complete' && <button className="drax-score-next" onClick={onStart}>{language === 'vi' ? 'TRẬN MỚI' : 'NEW MATCH'}<ArrowRight size={18} /></button>}
   </section></div>;

@@ -1,33 +1,17 @@
-# DRAX FPS — development snapshot
+# DRAX FPS: Current development status
 
-The game is titled **DRAX FPS** in both `index.html` and its in-game interface.
-This repository contains a source snapshot prepared from the local
-`blackwater` working folder. The original folder and its existing Git origin
-were not modified.
+DRAX FPS is still being refactored. This repository was copied from the local `blackwater` worktree, without changing the original folder or its Git remote. The game title appears as DRAX FPS in `index.html` and the interface.
 
-## Known build blockers in this snapshot
+## What is blocking the build?
 
-- `app/game/engine.ts` was deleted locally but is still imported from
-  `app/page.tsx` and `app/fps-interface.tsx`.
-- An older copy of the engine from the upstream Git commit does **not** match
-  the current multiplayer/UI types and interfaces. It was **not** inserted
-  into this snapshot because it would misrepresent the current work.
-- `package.json` references older verification entrypoints
-  (`verify-world.mjs`, `verify-combat.mjs`, and `verify-multiplayer.mjs`)
-  that are not present in the current local working tree.
+- `app/game/engine.ts` is missing, but `app/page.tsx` and `app/fps-interface.tsx` still import it.
+- The older engine from the upstream commit does not match the current multiplayer and interface types. Copying it back would not be a reliable fix.
+- The test commands in `package.json` refer to `verify-world.mjs`, `verify-combat.mjs`, and `verify-multiplayer.mjs`. Those files are not in this snapshot.
 
-As a result, `npm run build` and `npm test` cannot currently succeed. This
-snapshot is not a verified production build or deployable public demo.
-Complete and validate the engine refactor and verification scripts before
-claiming compatibility with the documented deployment flow.
+Until the engine and verification scripts are restored and checked, `npm run build` and `npm test` will fail. This is source code in progress, not a tested public release.
 
-## Included and excluded files
+## What was uploaded?
 
-Included: current React/Three.js/TypeScript source, multiplayer server, project
-configuration, README, original MIT license, third-party notices and runtime
-models/textures. Third-party authors retain their own rights.
+The repository includes the application source, multiplayer server, configuration, documentation, original MIT license, third-party notices, and game assets. Asset authors and library maintainers keep their own licensing terms.
 
-Excluded intentionally: `node_modules`, `dist`, Git credentials, local
-Cloudflare/tunnel commands, browser test profiles, temporary logs and benchmark
-output. This keeps the public repository focused on source without disclosing
-machine-specific or sensitive material.
+Local dependencies, build outputs, Git credentials, tunnel configuration, browser testing profiles, temporary logs, and benchmark artifacts were intentionally left out. None of those files are required in the public source snapshot.

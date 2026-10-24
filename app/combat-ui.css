@@ -1,4 +1,4 @@
-/* DRAX FPS combat interface — rebuilt from scratch for a lightweight FPS HUD. */
+/* DRAX FPS combat interface - rebuilt from scratch for a lightweight FPS HUD. */
 :root {
   --drax-bg: #05090b;
   --drax-panel: rgba(6, 11, 14, .9);
@@ -24,7 +24,7 @@ body { font-family: Bahnschrift, "Arial Narrow", Arial, sans-serif; }
 .drax-ui button { border: 0; }
 .drax-screen-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(2,5,7,.99) 0, rgba(3,7,10,.92) 38%, rgba(3,7,10,.52) 64%, rgba(3,7,10,.18) 82%, transparent 100%), linear-gradient(0deg, rgba(2,5,7,.7), transparent 42%); }
 
-/* Deployment — intentionally not a dashboard/card layout. */
+/* Deployment - intentionally not a dashboard/card layout. */
 .drax-deploy { position: absolute; inset: 0; pointer-events: auto; padding: 26px 34px 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(330px, 420px); grid-template-rows: 48px 1fr auto auto; gap: 18px 48px; }
 .drax-deploy-top { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; }
 .drax-brand { display: flex; align-items: center; gap: 10px; color: var(--drax-ink); }

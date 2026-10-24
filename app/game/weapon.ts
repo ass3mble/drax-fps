@@ -462,7 +462,7 @@ export function createWeapon(
   );
   selector.rotation.x = -0.24;
   cyl(0.008, 0.011, mat.edge, -0.058, -0.055, -0.06, 'x');
-  sideLabel('MR—17', 0.1, 0.025, -0.053, -0.011, -0.128);
+  sideLabel('MR-17', 0.1, 0.025, -0.053, -0.011, -0.128);
   sideLabel(
     '5.56 × 45   //   01742',
     0.143,

@@ -1,19 +1,19 @@
 # Third-party notices
 
-## Poly Haven — 3D assets and textures
+## Poly Haven - 3D assets and textures
 
 Files under `public/models/polyhaven/` and `public/textures/polyhaven/`
 originate from Poly Haven's publicly available 3D assets and materials,
 which are released under CC0 1.0.
 Source and license information: https://polyhaven.com/license
 
-## Kenney — Modular Space Kit
+## Kenney - Modular Space Kit
 
 Files under `public/models/kenney-space/` are from Kenney's Modular Space Kit.
 The included `public/models/kenney-space/License.txt` identifies the assets as
 Creative Commons Zero (CC0 1.0). Source: https://kenney.nl/assets
 
-## Quaternius — Ultimate Animated Character Pack
+## Quaternius - Ultimate Animated Character Pack
 
 `public/models/quaternius/soldier.glb` is the Soldier example distributed with
 three.js and originates from Quaternius' Ultimate Animated Character Pack.
@@ -23,7 +23,7 @@ DRAX FPS uses the following third-party software. Each package retains its own l
 
 The shadcn notice applies to the copied UI components and shared styles. Transitive runtime entries are limited to packages confirmed in the module or dependency graph used by the game; this is not an inventory of development tools.
 
-## shadcn — 4.18.0
+## shadcn - 4.18.0
 
 Copied UI component source and shared CSS.
 
@@ -53,7 +53,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## react — 19.2.6
+## react - 19.2.6
 
 Direct runtime dependency.
 
@@ -83,7 +83,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## react-dom — 19.2.6
+## react-dom - 19.2.6
 
 Direct runtime dependency.
 
@@ -113,7 +113,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## three — 0.180.0
+## three - 0.180.0
 
 Direct runtime dependency.
 
@@ -143,7 +143,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-## lucide-react — 1.31.0
+## lucide-react - 1.31.0
 
 Direct runtime dependency, including the full ISC and Feather MIT notices.
 
@@ -195,7 +195,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## @base-ui/react — 1.7.0
+## @base-ui/react - 1.7.0
 
 Direct runtime dependency for slider and switch.
 
@@ -225,7 +225,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## clsx — 2.1.1
+## clsx - 2.1.1
 
 Direct runtime dependency.
 
@@ -243,7 +243,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-## tailwind-merge — 3.6.0
+## tailwind-merge - 3.6.0
 
 Direct runtime dependency.
 
@@ -273,7 +273,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## tailwindcss — 4.2.1
+## tailwindcss - 4.2.1
 
 Generated stylesheet dependency.
 
@@ -303,7 +303,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## tw-animate-css — 1.4.0
+## tw-animate-css - 1.4.0
 
 Imported stylesheet dependency.
 
@@ -333,7 +333,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## scheduler — 0.27.0
+## scheduler - 0.27.0
 
 Runtime dependency of react-dom.
 
@@ -363,7 +363,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## @base-ui/utils — 0.3.2
+## @base-ui/utils - 0.3.2
 
 Imported by the Base UI slider/switch module graph.
 
@@ -393,7 +393,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## @floating-ui/utils — 0.2.12
+## @floating-ui/utils - 0.2.12
 
 Imported by the Base UI slider/switch module graph.
 
@@ -422,7 +422,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-## use-sync-external-store — 1.6.0
+## use-sync-external-store - 1.6.0
 
 Imported by Base UI useIsHydrating.
 
@@ -453,7 +453,7 @@ SOFTWARE.
 ```
 
 
-## Kenney — Modular Space Kit 1.0
+## Kenney - Modular Space Kit 1.0
 
 Source: https://kenney.nl/assets/modular-space-kit
 Author: Kenney (https://kenney.nl)
@@ -464,22 +464,22 @@ Bundled in `public/models/kenney-space/`: `template-wall.glb`, `gate.glb`,
 is preserved alongside the models as `License.txt`. These are used as instanced
 perimeter architecture and rooftop details. No CS or VALORANT game assets are bundled.
 
-## Poly Haven — CC0 environment assets
+## Poly Haven - CC0 environment assets
 
 Source: https://polyhaven.com/
 License: Creative Commons Zero (CC0 1.0).
 
 Bundled realistic props in `public/models/polyhaven/`:
-- `barrel_03` — Serhii Khromov
-- `old_military_crate` — Jack Mava
-- `plastic_container` — PierreB3D
-- `utility_box_01` — James Ray Cock
-- `hand_truck` — Mutanzom3D
+- `barrel_03` - Serhii Khromov
+- `old_military_crate` - Jack Mava
+- `plastic_container` - PierreB3D
+- `utility_box_01` - James Ray Cock
+- `hand_truck` - Mutanzom3D
 
 Bundled PBR texture sets in `public/textures/polyhaven/`:
-- `concrete_floor_01` — Rob Tuytel
-- `container_side` — Dimitrios Savva
-- `rusty_metal_02` — Rob Tuytel
+- `concrete_floor_01` - Rob Tuytel
+- `container_side` - Dimitrios Savva
+- `rusty_metal_02` - Rob Tuytel
 
 The model and texture assets are used only for visual detail and materials;
 gameplay collision and hit detection remain defined by DRAX FPS's own geometry.
