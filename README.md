@@ -1,87 +1,101 @@
-# DRAX FPS
+# DRAX FPS | Browser-Based Tactical Shooter
 
-DRAX FPS is a browser-based tactical shooter built with Three.js, React, and TypeScript. Multiplayer runs through a self-hosted WebSocket server, so players can join from a desktop browser without installing a separate game client.
+**DRAX FPS is an open-source first-person shooter project built with Three.js, React, and TypeScript.** It explores tactical firefights, weapon handling, 3D arenas, and multiplayer sessions that run through a self-hosted WebSocket server.
 
-**Current state:** This repository is a work-in-progress source snapshot, not a playable release. The engine refactor is unfinished: `app/game/engine.ts` is missing even though other modules still import it. Some test scripts are missing too. As a result, `npm run build` and `npm test` do not currently work. The details are in [development status](docs/DEVELOPMENT_STATUS.md).
+The idea is simple: launch a match in a desktop browser without asking every player to install a separate game client.
 
-The sections below describe the systems and intended development workflow. They should not be read as a claim that this snapshot has passed a fresh build or gameplay test.
-## Multiplayer systems in the source
+> **Development status:** This repository is an unfinished source snapshot, not a tested game release. The engine refactor is in progress, `app/game/engine.ts` is absent even though other modules import it, and several verification scripts are missing. `npm run build` and `npm test` cannot succeed in the current snapshot. See [development status](docs/DEVELOPMENT_STATUS.md).
 
-- Player nickname saved per browser/device
-- Named public rooms with live room browser
-- Direct join by room code
-- Up to 8 players per room
-- 20 Hz player pose synchronization
-- Server-authoritative hit, damage, kill, death, and team score handling
-- Server-side fire-rate, shot-origin, direction, and movement sanity checks
-- Respawn flow and scoreboard state
-- Ping display and heartbeat handling
-- Automatic reconnect and same-room session resume
-- Host migration when the current host leaves
-- Multiple maps and weapon loadouts
+## What is being built
 
-## Combat and movement
+| Area | Systems in the source |
+| --- | --- |
+| Multiplayer | Named rooms, room codes, player nicknames, reconnect and host handoff logic. |
+| Networking | WebSocket communication, 20 Hz player position updates, heartbeat, and ping display. |
+| Match rules | Team scoring, damage and hit validation, respawn, and server-side sanity checks. |
+| Combat | Aiming, recoil, reloading, leaning, hit feedback, health, ammunition, and a scoreboard. |
+| Weapons | Ranger, Specter, Sentinel, and Breaker, with different intended combat roles. |
+| Arenas | 3D environments, multiple map definitions, cover, and imported licensed assets. |
 
-- First-person movement, sprinting, jumping, aiming, firing, reloading, and leaning
-- Multiple weapons including Ranger, Specter, Sentinel, and Breaker
-- Crosshair, scoped aiming, recoil, hit feedback, health, ammo, radar, and scoreboard HUD
-- Procedural/assembled 3D environments with imported third-party assets where noted
+These describe features represented in the code. They have **not** all been validated end to end in this published snapshot.
 
 ## Controls
 
-| Action | Control |
+| Action | Key or input |
 | --- | --- |
-| Move | WASD |
-| Look | Mouse |
+| Move | `W`, `A`, `S`, `D` |
+| Look around | Mouse |
 | Fire | Left mouse button |
 | Aim | Right mouse button |
-| Lean | Q / E |
-| Sprint | Left Shift |
-| Jump | Space |
-| Reload | R |
-| Scoreboard | Tab |
-| Pause | Escape |
+| Lean | `Q` / `E` |
+| Sprint | Left `Shift` |
+| Jump | `Space` |
+| Reload | `R` |
+| Scoreboard | `Tab` |
+| Pause | `Escape` |
 
-A desktop browser with WebGL, keyboard, and mouse is recommended.
+A modern desktop browser with WebGL, keyboard, and mouse is recommended.
 
-## Requirements
+## Technologies
 
-- Node.js 22.13+ (Node.js 24 recommended)
-- npm
+- **Three.js:** 3D scenes, objects, cameras, and rendering.
+- **React and TypeScript:** Game interface and application code.
+- **Node.js and WebSocket:** Multiplayer server and room state.
+- **Vite:** Local development and client builds.
 
-## Local development
+## Local setup
+
+Requires Node.js 22.13 or newer and npm.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-## Hosting multiplayer
+The development server is useful for inspecting the project, but gameplay may not load until the missing engine module and its imports are repaired.
 
-Once the build blockers are resolved, this command will build the client and start the HTTP and WebSocket server on port `8787`:
+## Multiplayer hosting
+
+After the engine and build blockers are fixed, the intended hosting command is:
 
 ```sh
 npm run host
 ```
 
-Then open:
+This builds the client and starts the HTTP and WebSocket server on port `8787`.
 
-- Same PC: `http://127.0.0.1:8787`
-- Same LAN: use one of the `LAN:` addresses printed by the server
+- Local machine: `http://127.0.0.1:8787`
+- Other devices on the same network: use the address printed by the server.
 
-The server binds to `0.0.0.0`. If Windows Firewall prompts, allow Node.js on the appropriate private network.
-
-## Sharing a public browser link
-
-When the server is running, Cloudflare Tunnel can expose it without opening a router port:
+For a temporary public browser link, the documented Cloudflare Tunnel command is:
 
 ```sh
 cloudflared tunnel --url http://localhost:8787
 ```
 
-Cloudflare Quick Tunnel returns a temporary `https://*.trycloudflare.com` URL. Share that URL with friends and they can open DRAX directly in Chrome/Edge. For a stable custom hostname, use a named Cloudflare Tunnel and your own domain.
+This requires a working local server and an appropriately configured network. It is not evidence that the current snapshot can be deployed successfully.
 
-## Checks
+## Repository structure
+
+| Path | Purpose |
+| --- | --- |
+| `app/game/` | Weapons, maps, scene objects, movement, combat, and visuals |
+| `app/multiplayer/` | Browser-side network client |
+| `app/fps-interface.tsx` | Lobby, deployment, match interface, and scoreboard |
+| `app/combat-ui.css` | Visual styling |
+| `server/index.mjs` | Multiplayer rooms, events, validation, and score handling |
+| `public/models/` | 3D models used by the project |
+| `public/textures/` | Environmental textures |
+| `docs/` | Technical research and development notes |
+
+## What needs work next
+
+1. Reconnect or rebuild `app/game/engine.ts` to match the current interface and multiplayer code.
+2. Restore the missing verification scripts referenced in `package.json`.
+3. Run builds, tests, and linting with the restored project.
+4. Test real browser sessions and tune weapon feel, map balance, and network behavior.
+
+Once the missing pieces are restored, the intended checks are:
 
 ```sh
 npm test
@@ -90,20 +104,8 @@ npm run build
 npm run lint
 ```
 
-The missing multiplayer verification script was intended to check room creation, two-player synchronization, hits and scoring, respawning, reconnection, and cleanup. Restore the verification scripts and complete the engine refactor before using these commands as release checks.
+## License and credits
 
-## Where to find things
+Original DRAX FPS source code uses the [MIT License](LICENSE). Third-party assets and libraries retain their own licenses; see [asset and library notices](THIRD_PARTY_NOTICES.md).
 
-- `app/game/`: rendering, maps, weapons, combat, physics, audio, bots, and gameplay systems
-- `app/multiplayer/`: browser multiplayer client and protocol state
-- `app/fps-interface.tsx`: deployment, lobby, HUD, settings, and scoreboard UI
-- `app/combat-ui.css`: DRAX combat/lobby interface styling
-- `server/index.mjs`: HTTP server, WebSocket rooms, authoritative combat, respawn, score, heartbeat, and reconnect state
-- `verify-multiplayer.mjs`: end-to-end protocol verification
-- `public/models/` and `public/textures/`: runtime assets
-
-## License and assets
-
-Original DRAX FPS code is released under the [MIT License](LICENSE). Third-party libraries and assets retain their respective licenses and attribution requirements; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and `public/third-party-notices.txt`.
-
-This snapshot came from a local worktree originally linked to [`Hiraeth010/blackwater`](https://github.com/Hiraeth010/blackwater). The original MIT copyright notice remains in place.
+This snapshot originated from a local worktree previously linked to [Hiraeth010/blackwater](https://github.com/Hiraeth010/blackwater). Its existing MIT copyright attribution is preserved.
